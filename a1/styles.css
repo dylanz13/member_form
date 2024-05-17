@@ -1,0 +1,155 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    background-color: #333;
+}
+
+nav ul li {
+    margin: 0;
+}
+
+nav ul li a {
+    display: block;
+    padding: 14px 20px;
+    color: white;
+    text-decoration: none;
+}
+
+nav ul li a:hover {
+    background-color: #575757;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+}
+
+form label {
+    align-self: flex-start;
+    margin-left: 20px;
+}
+
+form input, form button {
+    margin: 10px;
+    padding: 10px;
+    width: 300px;
+}
+
+button {
+    cursor: pointer;
+}
+
+.required {
+    color: red;
+}
+
+input:invalid {
+    border: 1px solid red;
+}
+
+#controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+    flex-wrap: wrap;
+}
+
+#delete-all {
+    padding: 10px 20px;
+    background-color: #d9534f;
+    color: white;
+    border: none;
+}
+
+#delete-all:hover {
+    background-color: #c9302c;
+}
+
+#search {
+    margin-left: 20px;
+    padding: 10px;
+    width: 300px;
+}
+
+#member-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 20px;
+    padding: 0;
+    list-style-type: none;
+}
+
+.member-card {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 20px;
+    width: 200px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    position: relative;
+    animation: fadeIn 0.5s ease;
+}
+
+.member-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.member-card button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: #d9534f;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.member-card button:hover {
+    background: #c9302c;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; transform: scale(1); }
+    to { opacity: 0; transform: scale(0.9); }
+}
+
+@media (max-width: 600px) {
+    form input, form button, #search {
+        width: 90%;
+    }
+
+    .member-card {
+        width: 90%;
+    }
+}
