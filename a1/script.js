@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         memberCard.className = 'member-card';
         memberCard.innerHTML = `
             <button class="delete-member">&times;</button>
-            <img src="${member.imageUrl}" alt="${member.name}">
+            <img src="${member.imageUrl}" alt="${member.name}" onerror="this.onerror=null;this.src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png';">
             <h3>${member.name}</h3>
             <p>${member.description}</p>
             ${member.age ? `<p>Age: ${member.age}</p>` : ''}
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const imageUrl = document.getElementById('image-url').value;
         const hobby = document.getElementById('hobby').value;
 
-        const requiredFields = [name, description, imageUrl];
+        const requiredFields = [name, description];
         let isValid = true;
         requiredFields.forEach(field => {
             if (!field) {
