@@ -60,6 +60,7 @@ button {
 }
 
 input:invalid {
+    border-radius: 2px;
     border: 1px solid red;
 }
 
@@ -73,9 +74,10 @@ input:invalid {
 
 #delete-all {
     padding: 10px 20px;
+    border: 1px groove red;
+    border-radius: 5px;
     background-color: #d9534f;
     color: white;
-    border: none;
 }
 
 #delete-all:hover {
@@ -99,7 +101,7 @@ input:invalid {
 
 .member-card {
     background-color: white;
-    border: 1px solid #ddd;
+    border: 1px groove #000000;
     border-radius: 5px;
     margin: 10px;
     padding: 20px;
