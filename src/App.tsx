@@ -1,35 +1,32 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from 'react';
+import { Flex, Container, Heading, VStack, Box } from '@chakra-ui/react';
+import MemberForm from './components/MemberForm';
+import MemberList from './components/MemberList';
+import Search from './components/Search';
 
-function App() {
-  const [count, setCount] = useState(0)
+const App: React.FC = () => {
+    const [searchTerm, setSearchTerm] = useState('');
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    return (
+        <Flex direction="column" align="center" justify="center" minHeight="100vh">
+            <Container maxW="container.lg" centerContent>
+                <VStack spacing={4} mt={4} width="100%">
+                    <Heading as="h1" textAlign="center" my={4}>
+                        Member List
+                    </Heading>
+                    <Box width="100%">
+                        <MemberForm />
+                    </Box>
+                    <Box width="100%">
+                        <Search onSearch={setSearchTerm} />
+                    </Box>
+                    <Box width="100%">
+                        <MemberList searchTerm={searchTerm} />
+                    </Box>
+                </VStack>
+            </Container>
+        </Flex>
+    );
+};
 
-export default App
+export default App;
