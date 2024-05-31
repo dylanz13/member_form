@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent } from 'react';
 import { useDispatch } from 'react-redux';
-import { addMember } from '../store.ts';
+import { addMember } from '../vite-env.ts';
 import { Box, Button, Input, FormControl, FormLabel, Stack } from '@chakra-ui/react';
 
 const MemberForm: React.FC = () => {

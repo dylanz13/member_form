@@ -10,7 +10,7 @@ import {
     ModalFooter,
     Button
 } from '@chakra-ui/react';
-import { Member } from '../store';
+import { Member } from '../vite-env.ts';
 
 interface MemberDetailProps {
     member: Member | null;

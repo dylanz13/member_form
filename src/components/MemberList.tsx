@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState, deleteMember, deleteAllMembers, Member } from '../store';
+import { RootState, deleteMember, deleteAllMembers, Member } from '../vite-env.ts';
 import {
     Box,
     Button,

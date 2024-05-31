@@ -34,11 +34,11 @@ const membersSlice = createSlice({
 
 export const { addMember, deleteMember, deleteAllMembers } = membersSlice.actions;
 
-export const store = configureStore({
+export const viteEnv = configureStore({
     reducer: {
         members: membersSlice.reducer
     }
 });
 
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof viteEnv.getState>;
+export type AppDispatch = typeof viteEnv.dispatch;
