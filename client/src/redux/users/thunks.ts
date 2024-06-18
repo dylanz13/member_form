@@ -11,8 +11,8 @@ export const getUsersAsync = createAsyncThunk(
 
 export const addUserAsync = createAsyncThunk(
     actionTypes.ADD_USER,
-    async (name) => {
-        return await UserService.addUser({ name });
+    async (data) => {
+        return await UserService.addUser({ data });
     }
 );
 
@@ -25,8 +25,8 @@ export const editUserAsync = createAsyncThunk(
 
 export const deleteUserAsync = createAsyncThunk(
     actionTypes.DELETE_USER,
-    async (id) => {
-        return await UserService.deleteUser({ id });
+    async (name) => {
+        return await UserService.deleteUser({ name });
     }
 );
 

@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/users', membersRouter);
+app.use('/members', membersRouter);
 app.use('/default', defaultRouter);
 
 module.exports = app;

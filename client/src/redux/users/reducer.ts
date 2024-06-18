@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { REQUEST_STATE, AppState } from '../utils';
-import { getUsersAsync, addUserAsync, editUserAsync, deleteUserAsync, deleteAllAsync } from './thunks';
+import { getUsersAsync, getIdAsync, addUserAsync, editUserAsync, deleteUserAsync, deleteAllAsync } from './thunks';
 
 const INITIAL_STATE: AppState = {
     list: [],
@@ -29,6 +29,15 @@ const membersSlice = createSlice({
             .addCase(getUsersAsync.rejected, (state, action) => {
                 state.getMembers = REQUEST_STATE.REJECTED;
                 state.error = action.error.message ?? 'Failed to fetch members';
+            })
+            // Get ID from Name
+            .addCase(getIdAsync.pending, (state) => {
+                state.getId = REQUEST_STATE.PENDING;
+                state.error = null;
+            })
+            .addCase(getUsersAsync.fulfilled, (state, action) => {
+                state.getId = REQUEST_STATE.FULFILLED;
+                state.list = action.payload;
             })
             // Add Member
             .addCase(addUserAsync.pending, (state) => {

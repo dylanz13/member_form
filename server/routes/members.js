@@ -41,9 +41,10 @@ router.post('/', (req, res, next) => {
   return res.send(`${member.name} added successfully`);
 });
 
-// Update a member by ID
-router.put('/:memberId', (req, res, next) => {
-  const memberIndex = members.findIndex(member => member.id === req.params.memberId);
+// Update a member by name
+router.put('/:name', (req, res, next) => {
+  const id = getId(req.params.name);
+  const memberIndex = members.findIndex(member => member.id === id);
   if (memberIndex === -1) return res.status(404).send({ message: 'Member not found' });
 
   const updatedMember = { ...members[memberIndex], ...req.body };
@@ -52,9 +53,18 @@ router.put('/:memberId', (req, res, next) => {
   return res.send(updatedMember);
 });
 
-// Delete a member by ID
-router.delete('/:memberId', (req, res, next) => {
-  const memberIndex = members.findIndex(member => member.id === req.params.memberId);
+// Return member ID given name
+function getId(name) {
+  const memberIndex = members.findIndex(member => member.name === name);
+  if (memberIndex === -1) return "";
+
+  return members[memberIndex]["id"];
+};
+
+// Delete a member by name
+router.delete('/:name', (req, res, next) => {
+  const id = getId(req.params.name);
+  const memberIndex = members.findIndex(member => member.id === id);
   if (memberIndex === -1) return res.status(404).send({ message: 'Member not found' });
 
   members.splice(memberIndex, 1);
