@@ -57,7 +57,7 @@ const MemberDetail: React.FC<MemberDetailsPopupProps> = ({ member, onClose }) =>
         toast({
             title: "Member deleted.",
             description: "The member has been deleted successfully.",
-            status: "error",
+            status: "success",
             duration: 5000,
             isClosable: true,
         });

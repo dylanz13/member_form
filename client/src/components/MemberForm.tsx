@@ -36,7 +36,7 @@ const MemberForm: React.FC = () => {
         setFormData({
             name: '',
             description: '',
-            age: undefined,
+            age: '',
             imageUrl: '',
             hobby: '',
         });
