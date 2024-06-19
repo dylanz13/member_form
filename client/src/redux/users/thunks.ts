@@ -1,6 +1,7 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import { actionTypes } from './actionTypes';
+import {createAsyncThunk} from '@reduxjs/toolkit';
+import {actionTypes} from './actionTypes';
 import UserService from './service';
+import {Member} from "../store";
 
 export const getUsersAsync = createAsyncThunk(
     actionTypes.GET_USERS,
@@ -11,22 +12,35 @@ export const getUsersAsync = createAsyncThunk(
 
 export const addUserAsync = createAsyncThunk(
     actionTypes.ADD_USER,
-    async (data) => {
-        return await UserService.addUser({ data });
+    async (data: Partial<Member>) => {
+        return await UserService.addUser( data );
+    }
+);
+
+
+
+export const getDefaultAsync = createAsyncThunk(
+    actionTypes.GET_DEFAULT,
+    async () => {
+        const noHouse = await UserService.getUser("Dr. Gregory House");
+        if (!noHouse) {
+            const data = await UserService.getDefault();
+            return await UserService.addUser(data);
+        }
     }
 );
 
 export const editUserAsync = createAsyncThunk(
     actionTypes.EDIT_USER,
-    async (id, data) => {
-        return await UserService.editUser( id, data );
+    async ( obj: {id: string, data: Partial<Member>} ) => {
+        return await UserService.editUser( obj["id"], obj["data"] );
     }
 );
 
 export const deleteUserAsync = createAsyncThunk(
     actionTypes.DELETE_USER,
-    async (name) => {
-        return await UserService.deleteUser({ name });
+    async (id: string) => {
+        return await UserService.deleteUser( id );
     }
 );
 

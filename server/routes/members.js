@@ -72,7 +72,6 @@ router.delete('/:id', (req, res) => {
   const memberIndex = members.findIndex(member => member.id === id);
   if (memberIndex === -1) return res.status(404).send({ message: 'Member not found' });
 
-  const name = members[memberIndex].name;
   members.splice(memberIndex, 1);
   writeMembersToFile(JSON.stringify(members));
   return res.send({ id: id});

@@ -1,13 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { REQUEST_STATE, AppState } from '../utils';
-import { getUsersAsync, addUserAsync, editUserAsync, deleteUserAsync, deleteAllAsync } from './thunks';
+import { AppState } from '../utils';
+import { getUsersAsync, getDefaultAsync, addUserAsync, editUserAsync, deleteUserAsync, deleteAllAsync } from './thunks';
 
 const INITIAL_STATE: AppState = {
-    list: [],
-    getMembers: REQUEST_STATE.IDLE,
-    addMember: REQUEST_STATE.IDLE,
-    updateMember: REQUEST_STATE.IDLE,
-    deleteMember: REQUEST_STATE.IDLE,
+    members: [],
+    loading: false,
     error: null,
 };
 
@@ -19,56 +16,74 @@ const membersSlice = createSlice({
         builder
             // Fetch Members
             .addCase(getUsersAsync.pending, (state) => {
-                state.getMembers = REQUEST_STATE.PENDING;
+                state.loading = true;
                 state.error = null;
             })
             .addCase(getUsersAsync.fulfilled, (state, action) => {
-                state.getMembers = REQUEST_STATE.FULFILLED;
-                state.list = action.payload;
+                state.loading = false
+                state.members = action.payload;
             })
             .addCase(getUsersAsync.rejected, (state, action) => {
-                state.getMembers = REQUEST_STATE.REJECTED;
+                state.loading = false;
                 state.error = action.error.message ?? 'Failed to fetch members';
+            })
+            // get default fetch
+            .addCase(getDefaultAsync.pending, (state) => {
+                state.loading = true;
+                state.error = false;
+            })
+            .addCase(getDefaultAsync.fulfilled, (state, action) => {
+                state.loading = false;
             })
             // Add Member
             .addCase(addUserAsync.pending, (state) => {
-                state.addMember = REQUEST_STATE.PENDING;
+                state.loading = true;
                 state.error = null;
             })
             .addCase(addUserAsync.fulfilled, (state, action) => {
-                state.addMember = REQUEST_STATE.FULFILLED;
-                state.list = action.payload;
+                state.loading = false;
+                state.members.push(action.payload);
             })
             .addCase(addUserAsync.rejected, (state, action) => {
-                state.addMember = REQUEST_STATE.REJECTED;
+                state.loading = false;
                 state.error = action.error.message ?? 'Failed to add member';
             })
             // Update Member
             .addCase(editUserAsync.pending, (state) => {
-                state.updateMember = REQUEST_STATE.PENDING;
+                state.loading = true;
                 state.error = null;
             })
+            .addCase(editUserAsync.fulfilled, (state, action) => {
+                state.loading = false;
+                const index = state.members.findIndex((member: any) => member.id === action.payload.id);
+                state.members[index] = action.payload;
+            })
             .addCase(editUserAsync.rejected, (state, action) => {
-                state.updateMember = REQUEST_STATE.REJECTED;
+                state.loading = false;
                 state.error = action.error.message ?? 'Failed to update member';
             })
             // Delete Member
             .addCase(deleteUserAsync.pending, (state) => {
-                state.deleteMember = REQUEST_STATE.PENDING;
+                state.loading = true;
                 state.error = null;
             })
+            .addCase(deleteUserAsync.fulfilled, (state, action) => {
+                state.loading = false;
+                const index = state.members.findIndex((member: any) => member.id === action.payload.id);
+                state.members.splice(index, 1);
+            })
             .addCase(deleteUserAsync.rejected, (state, action) => {
-                state.deleteMember = REQUEST_STATE.REJECTED;
+                state.loading = false;
                 state.error = action.error.message ?? 'Failed to delete member';
             })
             // Delete all
             .addCase(deleteAllAsync.pending, (state) => {
-                state.getMembers = REQUEST_STATE.PENDING;
+                state.loading = true;
                 state.error = null;
             })
             .addCase(deleteAllAsync.fulfilled, (state, action) => {
-                state.getMembers = REQUEST_STATE.FULFILLED;
-                state.list = action.payload;
+                state.loading = false;
+                state.members = [];
             });
     },
 });

@@ -1,13 +1,17 @@
+import {Member} from "../store";
+
+export const hostPort = 5000;
+
 const getUsers = async () => {
-    const response = await fetch('http://localhost:5000/members', {
+    const response = await fetch(`http://localhost:${hostPort}/members`, {
         method: 'GET'
     });
 
     return response.json();
 };
 
-const addUser = async (memberData: any) => {
-    const response = await fetch('http://localhost:5000/members', {
+const addUser = async (memberData: Partial<Member>) => {
+    const response = await fetch(`http://localhost:${hostPort}/members`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -24,8 +28,32 @@ const addUser = async (memberData: any) => {
     return data;
 };
 
-const editUser = async (memberId: any, memberData: any) => {
-    const response = await fetch(`http://localhost:3001/members/${memberId}`, {
+const getUser = async (name: string) => {
+    const response = await fetch(`http://localhost:${hostPort}/members/${name}`, {
+        method: 'GET'
+    });
+    const data = await response.json();
+    return (!response.ok) ? 0 : 1;
+}
+
+
+const getDefault = async () => {
+    const response = await fetch(`http://localhost:${hostPort}/default`, {
+        method: 'GET',
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+        const errorMsg = data?.message || 'Failed to add member';
+        throw new Error(errorMsg);
+    }
+
+    return data;
+};
+
+
+const editUser = async (name: string, memberData: Partial<Member>) => {
+    const response = await fetch(`http://localhost:${hostPort}/members/${name}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -42,8 +70,8 @@ const editUser = async (memberId: any, memberData: any) => {
     return data;
 };
 
-const deleteUser = async (memberId: any) => {
-    const response = await fetch(`http://localhost:3001/members/${memberId}`, {
+const deleteUser = async (name: string) => {
+    const response = await fetch(`http://localhost:${hostPort}/members/${name}`, {
         method: 'DELETE'
     });
 
@@ -58,7 +86,7 @@ const deleteUser = async (memberId: any) => {
 
 
 const deleteAll = async () => {
-    const response = await fetch(`http://localhost:3001/members/`, {
+    const response = await fetch(`http://localhost:${hostPort}/members/`, {
         method: 'DELETE'
     });
 
@@ -67,8 +95,10 @@ const deleteAll = async () => {
 
 export default {
     getUsers,
+    getDefault,
     addUser,
     editUser,
     deleteUser,
-    deleteAll
+    deleteAll,
+    getUser
 }
