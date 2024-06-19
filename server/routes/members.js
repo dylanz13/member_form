@@ -20,12 +20,12 @@ const validateMember = (data) => {
 };
 
 // Get all users
-router.get('/', (req, res, next) => {
+router.get('/', (req, res) => {
   return res.send(members);
 });
 
 // Get a single member by name
-router.get('/:name', (req, res, next) => {
+router.get('/:name', (req, res) => {
   const id = getId(req.params.name);
   const foundMember = members.find(member => member.id === id);
   if (!foundMember) return res.status(404).send({ message: 'Member not found' });
@@ -41,7 +41,7 @@ function getId(name) {
 }
 
 // Add a new member
-router.post('/', (req, res, next) => {
+router.post('/', (req, res) => {
   const validationError = validateMember(req.body);
   if (validationError) {
     return res.status(400).send({ message: validationError });
@@ -50,11 +50,11 @@ router.post('/', (req, res, next) => {
   const member = { id: uuid(), age:parseInt(req.body.age), ...req.body };
   members.push(member);
   writeMembersToFile(JSON.stringify(members));
-  return res.send({message: `${member.name} added successfully`});
+  return res.send(member);
 });
 
 // Update a member by id
-router.put('/:id', (req, res, next) => {
+router.put('/:id', (req, res) => {
   const id = req.params.id;
   const memberIndex = members.findIndex(member => member.id === id);
   if (memberIndex === -1) return res.status(404).send({ message: 'Member not found' });
@@ -66,7 +66,7 @@ router.put('/:id', (req, res, next) => {
 });
 
 // Delete a member by id
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', (req, res) => {
   const id = req.params.id;
   console.log(req.params.id);
   const memberIndex = members.findIndex(member => member.id === id);
@@ -75,10 +75,10 @@ router.delete('/:id', (req, res, next) => {
   const name = members[memberIndex].name;
   members.splice(memberIndex, 1);
   writeMembersToFile(JSON.stringify(members));
-  return res.send({ message: `${name} deleted successfully` });
+  return res.send({ id: id});
 });
 
-router.delete('/', (req, res, next) => {
+router.delete('/', (req, res) => {
   members.splice(0, members.length);
   writeMembersToFile(JSON.stringify(members));
   return res.send({ message: 'All Members deleted successfully' });
