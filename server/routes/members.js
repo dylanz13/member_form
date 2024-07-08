@@ -1,86 +1,98 @@
 const express = require('express');
 const router = express.Router();
-const { v4: uuid } = require('uuid');
-const {writeMembersToFile, readMembersFromFile} = require("../public/persist");
-
-const members = !readMembersFromFile() ? [] : JSON.parse(readMembersFromFile());
+const { ObjectId } = require('mongodb');
+const { getDb } = require('../db');
 
 // Helper function to validate member data
 const validateMember = (data) => {
-  const { name, description, ageStr, hobby } = data;
+  const { name, description, age, hobby, image } = data;
   if (!name || typeof name !== 'string') return 'Invalid or missing "name"';
-  if (!description && typeof description !== 'string') return 'Invalid "description"';
-  try {
-    parseInt(ageStr);
-  } catch (e) {
-    return 'Invalid "age"';
-  }
+  if (!description || typeof description !== 'string') return 'Invalid or missing "description"';
+  if (isNaN(parseInt(age))) return 'Invalid or missing "age"';
   if (typeof hobby !== 'string') return 'Invalid "hobby"';
   return null;
 };
 
-// Get all users
-router.get('/', (req, res) => {
-  return res.send(members);
+// Get all members
+router.get('/', async (req, res) => {
+  try {
+    const db = getDb();
+    const members = await db.collection('members').find().toArray();
+    res.json(members);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching members', error: error.message });
+  }
 });
 
 // Get a single member by name
-router.get('/:name', (req, res) => {
-  const id = getId(req.params.name);
-  const foundMember = members.find(member => member.id === id);
-  if (!foundMember) return res.status(404).send({ message: 'Member not found' });
-  return res.send(foundMember);
+router.get('/:name', async (req, res) => {
+  try {
+    const db = getDb();
+    const member = await db.collection('members').findOne({ name: req.params.name});
+    if (!member) {
+      return res.status(404).json({ message: 'Member not found' });
+    }
+    res.json(member);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching member', error: error.message });
+  }
 });
-
-// Return member ID given name
-function getId(name) {
-  const memberIndex = members.findIndex(member => member.name === name);
-  if (memberIndex === -1) return "";
-
-  return members[memberIndex]["id"];
-}
 
 // Add a new member
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   const validationError = validateMember(req.body);
   if (validationError) {
-    return res.status(400).send({ message: validationError });
+    return res.status(400).json({ message: validationError });
   }
 
-  const member = { id: uuid(), age:parseInt(req.body.age), ...req.body };
-  members.push(member);
-  writeMembersToFile(JSON.stringify(members));
-  return res.send(member);
+  try {
+    const db = getDb();
+    const result = await db.collection('members').insertOne(req.body);
+    res.status(201).json({ _id: result.insertedId, ...req.body });
+  } catch (error) {
+    res.status(500).json({ message: 'Error adding member', error: error.message });
+  }
 });
 
-// Update a member by id
-router.put('/:id', (req, res) => {
-  const id = req.params.id;
-  const memberIndex = members.findIndex(member => member.id === id);
-  if (memberIndex === -1) return res.status(404).send({ message: 'Member not found' });
-
-  const updatedMember = { ...members[memberIndex], ...req.body };
-  members[memberIndex] = updatedMember;
-  writeMembersToFile(JSON.stringify(members)); // Save to JSON file
-  return res.send(updatedMember);
+// Update a member by ID
+router.put('/:id', async (req, res) => {
+  try {
+    const db = getDb();
+    const result = await db.collection('members').updateOne(
+        { _id: new ObjectId(req.params.id) },
+        { $set: req.body }
+    );
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ message: 'Member not found' });
+    }
+    res.json({ message: 'Member updated successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating member', error: error.message });
+  }
 });
 
-// Delete a member by id
-router.delete('/:id', (req, res) => {
-  const id = req.params.id;
-  console.log(req.params.id);
-  const memberIndex = members.findIndex(member => member.id === id);
-  if (memberIndex === -1) return res.status(404).send({ message: 'Member not found' });
-
-  members.splice(memberIndex, 1);
-  writeMembersToFile(JSON.stringify(members));
-  return res.send({ id: id});
+// Delete a member by ID
+router.delete('/:id', async (req, res) => {
+  try {
+    const db = getDb();
+    const result = await db.collection('members').deleteOne({ _id: new ObjectId(req.params.id) });
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ message: 'Member not found' });
+    }
+    res.json({ message: 'Member deleted successfully', id: req.params.id });
+  } catch (error) {
+    res.status(500).json({ message: 'Error deleting member', error: error.message });
+  }
 });
 
-router.delete('/', (req, res) => {
-  members.splice(0, members.length);
-  writeMembersToFile(JSON.stringify(members));
-  return res.send({ message: 'All Members deleted successfully' });
+router.delete('/', async (req, res) => {
+  try {
+    const db = getDb();
+    await db.collection('members').deleteMany({});
+    res.json({ message: 'All members deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error deleting all members', error: error.message });
+  }
 });
 
 module.exports = router;

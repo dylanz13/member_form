@@ -15,12 +15,12 @@ const MemberCard: React.FC<MemberCardProps> = ({ member, onClick, onClose }) => 
 
     const handleDelete = (e) => {
         e.stopPropagation();
-        dispatch(deleteUserAsync(member["id"]));
+        dispatch(deleteUserAsync(member["_id"]));
     };
 
     return (
         <Box className={"member-card"}
-            key={member.id}
+            key={member["_id"]}
             borderWidth="1px"
             borderRadius="lg"
             overflow="hidden"

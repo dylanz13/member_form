@@ -41,7 +41,7 @@ const MemberDetail: React.FC<MemberDetailsPopupProps> = ({ member, onClose }) =>
         const data = { ...formData };
         delete data["signal"];
         delete data["requestId"];
-        dispatch(editUserAsync({ id: member["id"], data: data }));
+        dispatch(editUserAsync({ id: member["_id"], data: data }));
         toast({
             title: "Member updated.",
             description: "The member details have been updated successfully.",
@@ -53,7 +53,7 @@ const MemberDetail: React.FC<MemberDetailsPopupProps> = ({ member, onClose }) =>
     };
 
     const handleDelete = () => {
-        dispatch(deleteUserAsync(member["id"]));
+        dispatch(deleteUserAsync(member["_id"]));
         toast({
             title: "Member deleted.",
             description: "The member has been deleted successfully.",

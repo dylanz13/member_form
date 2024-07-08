@@ -6,8 +6,11 @@ const cors = require('cors');
 
 var membersRouter = require('./routes/members');
 var defaultRouter = require('./routes/default');
+const {connectToDatabase} = require("./db");
 
 var app = express();
+
+connectToDatabase();
 
 app.use(cors());
 app.use(logger('dev'));
