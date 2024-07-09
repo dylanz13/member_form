@@ -8,7 +8,7 @@ const validateMember = (data) => {
   const { name, description, age, hobby, image } = data;
   if (!name || typeof name !== 'string') return 'Invalid or missing "name"';
   if (!description || typeof description !== 'string') return 'Invalid or missing "description"';
-  if (isNaN(parseInt(age))) return 'Invalid or missing "age"';
+  if (age && isNaN(parseInt(age))) return 'Invalid "age"';
   if (typeof hobby !== 'string') return 'Invalid "hobby"';
   return null;
 };
@@ -56,16 +56,33 @@ router.post('/', async (req, res) => {
 
 // Update a member by ID
 router.put('/:id', async (req, res) => {
+  delete req.body["_id"];
   try {
     const db = getDb();
+    const { updatedFields, removedFields } = req.body;
+
+    // Prepare the update operation
+    const updateOp = {};
+    if (Object.keys(updatedFields).length > 0) {
+      updateOp.$set = updatedFields;
+    }
+    if (removedFields && removedFields.length > 0) {
+      updateOp.$unset = removedFields.reduce((acc, field) => {
+        acc[field] = "";
+        return acc;
+      }, {});
+    }
+
     const result = await db.collection('members').updateOne(
         { _id: new ObjectId(req.params.id) },
-        { $set: req.body }
+        updateOp
     );
+
     if (result.matchedCount === 0) {
       return res.status(404).json({ message: 'Member not found' });
     }
-    res.json({ message: 'Member updated successfully' });
+    const member = await db.collection('members').findOne({ _id: new ObjectId(req.params.id) });
+    res.json({ message: 'Member updated successfully', member: member });
   } catch (error) {
     res.status(500).json({ message: 'Error updating member', error: error.message });
   }

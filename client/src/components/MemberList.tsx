@@ -54,7 +54,7 @@ const MemberList: React.FC = () => {
                 <div className="member-list">
                     {filteredMembers.map(member => (
                         <MemberCard
-                            key={member["id"]}
+                            key={member["_id"]}
                             member={member}
                             onClick={() => setSelectedMember(member)}
                         />

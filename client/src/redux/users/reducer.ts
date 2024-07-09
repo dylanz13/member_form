@@ -22,6 +22,7 @@ const membersSlice = createSlice({
             .addCase(getUsersAsync.fulfilled, (state, action) => {
                 state.loading = false
                 state.members = action.payload;
+                console.log(state.members);
             })
             .addCase(getUsersAsync.rejected, (state, action) => {
                 state.loading = false;
@@ -55,8 +56,8 @@ const membersSlice = createSlice({
             })
             .addCase(editUserAsync.fulfilled, (state, action) => {
                 state.loading = false;
-                const index = state.members.findIndex((member: any) => member.id === action.payload.id);
-                state.members[index] = action.payload;
+                const index = state.members.findIndex((member: any) => member._id === action.payload["member"]["_id"]);
+                state.members[index] = action.payload["member"];
             })
             .addCase(editUserAsync.rejected, (state, action) => {
                 state.loading = false;
@@ -69,7 +70,7 @@ const membersSlice = createSlice({
             })
             .addCase(deleteUserAsync.fulfilled, (state, action) => {
                 state.loading = false;
-                const index = state.members.findIndex((member: any) => member.id === action.payload.id);
+                const index = state.members.findIndex((member: any) => member._id === action.payload.id);
                 state.members.splice(index, 1);
             })
             .addCase(deleteUserAsync.rejected, (state, action) => {
