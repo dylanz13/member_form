@@ -13,7 +13,7 @@ var app = express();
 connectToDatabase();
 
 const corsOptions = {
-    origin: "http://localhost:5173"
+    origin: "http://localhost:5173" // frontend URI (ReactJS)
 }
 
 app.use(cors(corsOptions));
