@@ -12,7 +12,11 @@ var app = express();
 
 connectToDatabase();
 
-app.use(cors());
+const corsOptions = {
+    origin: "http://localhost:5173"
+}
+
+app.use(cors(corsOptions));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -20,6 +24,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/members', membersRouter);
-app.use('/default', defaultRouter);
+app.use('/health', defaultRouter);
 
 module.exports = app;

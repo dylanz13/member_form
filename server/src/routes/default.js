@@ -2,9 +2,8 @@ const express = require('express');
 const router = express.Router();
 const fs = require('fs-extra');
 
-router.get('/', function (req, res) {
-    const obj = fs.readJsonSync('./public/JSON/default.json');
-    return res.send(obj);
+router.get('/', (req, res) => {
+    res.status(200).json({ status: 'ok' });
 });
 
 module.exports = router;
