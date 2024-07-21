@@ -4,7 +4,10 @@
   "scripts": {
     "client": "cd client && npx vite",
     "server": "cd server && npm start",
-    "dev": "concurrently \"npm run client\" \"npm run server\""
+    "start": "concurrently \"npm run client\" \"npm run server\"",
+    "build:client": "cd client && npx vite build",
+    "build:server": "cd server && npm run build",
+    "build": "npm run build:client && npm run build:server"
   },
   "devDependencies": {
     "concurrently": "^7.0.0"
