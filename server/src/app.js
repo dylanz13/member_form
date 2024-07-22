@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
 });
 
 const corsOptions = {
-    origin: "https://member-form-06hl.onrender.com/" // frontend URI (ReactJS)
+    origin: "https://member-form-06hl.onrender.com" // frontend URI (ReactJS)
 }
 
 app.use(cors(corsOptions));
