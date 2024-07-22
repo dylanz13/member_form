@@ -1,9 +1,9 @@
 import {Member} from "../store";
 
-export const hostPort = 5000;
+export const url = "https://member-form.onrender.com";
 
 const getUsers = async () => {
-    const response = await fetch(`http://localhost:${hostPort}/members`, {
+    const response = await fetch(`${url}/members`, {
         method: 'GET'
     });
 
@@ -11,7 +11,7 @@ const getUsers = async () => {
 };
 
 const addUser = async (memberData: Partial<Member>) => {
-    const response = await fetch(`http://localhost:${hostPort}/members`, {
+    const response = await fetch(`${url}/members`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -29,7 +29,7 @@ const addUser = async (memberData: Partial<Member>) => {
 };
 
 const getUser = async (name: string) => {
-    const response = await fetch(`http://localhost:${hostPort}/members/${name}`, {
+    const response = await fetch(`${url}/members/${name}`, {
         method: 'GET'
     });
     const data = await response.json();
@@ -38,7 +38,7 @@ const getUser = async (name: string) => {
 
 
 const getDefault = async () => {
-    const response = await fetch(`http://localhost:${hostPort}/default`, {
+    const response = await fetch(`${url}/default`, {
         method: 'GET',
     });
 
@@ -53,7 +53,7 @@ const getDefault = async () => {
 
 
 const editUser = async (name: string, memberData: Partial<Member>) => {
-    const response = await fetch(`http://localhost:${hostPort}/members/${name}`, {
+    const response = await fetch(`${url}/members/${name}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -71,7 +71,7 @@ const editUser = async (name: string, memberData: Partial<Member>) => {
 };
 
 const deleteUser = async (name: string) => {
-    const response = await fetch(`http://localhost:${hostPort}/members/${name}`, {
+    const response = await fetch(`${url}/members/${name}`, {
         method: 'DELETE'
     });
 
@@ -86,7 +86,7 @@ const deleteUser = async (name: string) => {
 
 
 const deleteAll = async () => {
-    const response = await fetch(`http://localhost:${hostPort}/members/`, {
+    const response = await fetch(`${url}/members/`, {
         method: 'DELETE'
     });
 

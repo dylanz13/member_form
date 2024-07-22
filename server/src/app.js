@@ -12,8 +12,12 @@ var app = express();
 
 connectToDatabase();
 
+app.get("/", (req, res) => {
+    res.status(201).json({message: "Connected to Backend!"});
+});
+
 const corsOptions = {
-    origin: "http://localhost:5173" // frontend URI (ReactJS)
+    origin: "https://member-form.onrender.com" // frontend URI (ReactJS)
 }
 
 app.use(cors(corsOptions));
