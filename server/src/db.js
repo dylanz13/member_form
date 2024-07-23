@@ -20,6 +20,9 @@ function getDb() {
     return db;
 }
 
+async function stop() {
+    await client.close()
+}
 
-module.exports = { connectToDatabase, getDb };
-export {connectToDatabase, getDb}
+module.exports = { connectToDatabase, getDb, stop };
+export {connectToDatabase, getDb, stop}

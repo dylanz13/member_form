@@ -3,7 +3,7 @@ const express = require('express');
 const { MongoClient } = require('mongodb');
 const { ObjectId } = require('mongodb');
 const memberRoutes = require('../routes/members');
-const { connectToDatabase, getDb } = require('../db');
+const { connectToDatabase, getDb, stop } = require('../db');
 
 
 const app = express();
@@ -22,7 +22,8 @@ describe('insert', () => {
     });
 
     afterAll(async () => {
-        // await db.close();
+        await users.drop();
+        await stop()
     });
 
     describe('GET /members/:name', () => {
