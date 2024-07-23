@@ -60,7 +60,7 @@ const MemberList: React.FC = () => {
                         />
                     ))}
                 </div>
-            )};
+            )}
             {error && <p className="error">{error}</p>}
             {selectedMember && (
                 <div className="popup-container">

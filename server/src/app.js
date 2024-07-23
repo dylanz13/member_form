@@ -10,7 +10,7 @@ const {connectToDatabase} = require("./db");
 
 var app = express();
 
-connectToDatabase();
+await connectToDatabase("MembersDatabase");
 
 app.get("/", (req, res) => {
     res.status(201).json({message: "Connected to Backend!"});
@@ -31,3 +31,4 @@ app.use('/members', membersRouter);
 app.use('/health', defaultRouter);
 
 module.exports = app;
+export { app };
