@@ -10,7 +10,9 @@ const {connectToDatabase} = require("./db");
 
 var app = express();
 
-await connectToDatabase("MembersDatabase");
+connectToDatabase("MembersDatabase")
+    .then(() => {})
+    .catch(() => {});
 
 app.get("/", (req, res) => {
     res.status(201).json({message: "Connected to Backend!"});

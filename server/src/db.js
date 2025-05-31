@@ -11,8 +11,10 @@ async function connectToDatabase(name) {
         await client.connect();
         db = client.db();
         console.log('Connected to MongoDB');
+        return Promise.resolve();
     } catch (error) {
         console.error('Error connecting to MongoDB:', error);
+        return Promise.reject(error.message);
     }
 }
 
